@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { ShoppingCart, Wrench, Sparkles, CodeXml, Smartphone, Code, Menu, X, ArrowRight, Mail, Phone } from "lucide-react";
 
 /* ─── Constants ─── */
 const PHONE = "+32466238796";
@@ -8,61 +9,37 @@ const WHATSAPP_URL = `https://wa.me/${PHONE.replace(/\+/g, "")}`;
 
 const SERVICES = [
   {
-    icon: (
-      <svg xmlns="http://www.w3.org/2000/svg" className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 21v-7.5a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 .75.75V21m-4.5 0H2.36m11.14 0H18m0 0h3.64m-1.39 0V9.349M3.75 21V9.349m0 0a2.25 2.25 0 0 1 1.244-2.013L10.5 4.5l5.506 2.836A2.25 2.25 0 0 1 17.25 9.35" />
-      </svg>
-    ),
+    icon: <ShoppingCart className="w-7 h-7" />,
     title: "Webshops & E-commerce",
     description:
       "Bouwen, beheren en optimaliseren van webshops en e-commerceplatformen.",
   },
   {
-    icon: (
-      <svg xmlns="http://www.w3.org/2000/svg" className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M11.42 15.17 17.25 21A2.652 2.652 0 0 0 21 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 1 1-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.14a4.5 4.5 0 0 0 4.486-6.336l-3.276 3.277a3.004 3.004 0 0 1-2.25-2.25l3.276-3.276a4.5 4.5 0 0 0-6.336 4.486c.049.58.024 1.194-.14 1.743" />
-      </svg>
-    ),
+    icon: <Wrench className="w-7 h-7" />,
     title: "Onderhoud & Optimalisatie",
     description:
       "Uitvoeren van websiteonderhoud, updates en prestatieverbeteringen.",
   },
   {
-    icon: (
-      <svg xmlns="http://www.w3.org/2000/svg" className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 0 0-2.455 2.456ZM16.894 20.567 16.5 21.75l-.394-1.183a2.25 2.25 0 0 0-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 0 0 1.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 0 0 1.423 1.423l1.183.394-1.183.394a2.25 2.25 0 0 0-1.423 1.423Z" />
-      </svg>
-    ),
+    icon: <Sparkles className="w-7 h-7" />,
     title: "AI & Moderne Technologie",
     description:
       "Inzetten van AI-tools en moderne technologieën voor een efficiënte en innovatieve ontwikkeling.",
   },
   {
-    icon: (
-      <svg xmlns="http://www.w3.org/2000/svg" className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M14.25 9.75 16.5 12l-2.25 2.25m-4.5 0L7.5 12l2.25-2.25M6 20.25h12A2.25 2.25 0 0 0 20.25 18V6A2.25 2.25 0 0 0 18 3.75H6A2.25 2.25 0 0 0 3.75 6v12A2.25 2.25 0 0 0 6 20.25Z" />
-      </svg>
-    ),
+    icon: <CodeXml className="w-7 h-7" />,
     title: "Integraties & API's",
     description:
       "Integreren van plugins, betaalsystemen, API's en andere externe diensten.",
   },
   {
-    icon: (
-      <svg xmlns="http://www.w3.org/2000/svg" className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 1.5H8.25A2.25 2.25 0 0 0 6 3.75v16.5a2.25 2.25 0 0 0 2.25 2.25h7.5A2.25 2.25 0 0 0 18 20.25V3.75a2.25 2.25 0 0 0-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3" />
-      </svg>
-    ),
+    icon: <Smartphone className="w-7 h-7" />,
     title: "Responsive & SEO",
     description:
       "Zorgen voor snelle, gebruiksvriendelijke en SEO-geoptimaliseerde websites die perfect werken op alle apparaten.",
   },
   {
-    icon: (
-      <svg xmlns="http://www.w3.org/2000/svg" className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 6.75 22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3-4.5 16.5" />
-      </svg>
-    ),
+    icon: <Code className="w-7 h-7" />,
     title: "Maatwerk Ontwikkeling",
     description:
       "Ontwikkelen van projecten in diverse programmeertalen en technologieën, waarbij gebruik wordt gemaakt van geavanceerde tools en beschikbare resources om de beste oplossing te realiseren.",
@@ -99,18 +76,18 @@ function Navbar() {
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled
-        ? "bg-navy-950 shadow-lg shadow-navy-950/30 py-3"
-        : "bg-transparent py-5"
+      className={`fixed top-0 left-0 right-0 z-50 bg-white transition-all duration-300 ${isScrolled
+        ? "shadow-md border-b border-slate-100 py-3"
+        : "py-5"
         }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
         {/* Logo */}
         <a href="#home" className="flex items-center gap-3 group">
           <img
-            src="/seruno-full-logo.jpeg"
+            src="/seruno-half-logo.jpeg"
             alt="Seruno Digital Works Logo"
-            className="h-20 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+            className="h-14 w-auto p-1 object-contain transition-transform duration-300 group-hover:scale-105"
           />
           {/* <span className={`font-bold text-lg tracking-tight hidden sm:inline transition-colors duration-300 ${isScrolled ? "text-white" : "text-navy-950"
             }`}>
@@ -124,10 +101,7 @@ function Navbar() {
             <a
               key={link.href}
               href={link.href}
-              className={`transition-colors duration-300 text-sm font-medium relative after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[2px] after:transition-all after:duration-300 hover:after:w-full ${isScrolled
-                ? "text-navy-200 hover:text-white after:bg-navy-400"
-                : "text-navy-700 hover:text-navy-950 after:bg-navy-600"
-                }`}
+              className="transition-colors duration-300 text-sm font-medium text-navy-700 hover:text-navy-950 relative after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[2px] after:bg-navy-600 after:transition-all after:duration-300 hover:after:w-full"
             >
               {link.label}
             </a>
@@ -137,17 +111,14 @@ function Navbar() {
         {/* Mobile Menu Button */}
         <button
           onClick={() => setIsMobileOpen(!isMobileOpen)}
-          className={`md:hidden p-2 transition-colors duration-300 ${isScrolled || isMobileOpen ? "text-white" : "text-navy-950"
-            }`}
+          className="md:hidden p-2 text-navy-700 transition-colors duration-300"
           aria-label="Menu openen"
         >
-          <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-            {isMobileOpen ? (
-              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
-            ) : (
-              <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-            )}
-          </svg>
+          {isMobileOpen ? (
+            <X className="w-6 h-6" />
+          ) : (
+            <Menu className="w-6 h-6" />
+          )}
         </button>
       </div>
 
@@ -215,9 +186,7 @@ function Hero() {
               className="inline-flex items-center justify-center gap-2 border-2 border-navy-200 hover:border-navy-950 text-navy-950 font-semibold px-8 py-4 rounded-full text-lg transition-all duration-300 hover:bg-navy-50 hover:-translate-y-1"
             >
               Onze Diensten
-              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-              </svg>
+              <ArrowRight className="w-5 h-5" />
             </a>
           </div>
         </div>
@@ -411,9 +380,7 @@ function Contact() {
             </p>
             <span className="mt-4 inline-flex items-center gap-1 text-green-600 group-hover:text-white font-semibold text-sm transition-colors duration-500">
               Chat Nu
-              <svg className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
-              </svg>
+              <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
             </span>
           </a>
 
@@ -423,9 +390,7 @@ function Contact() {
             className="group flex flex-col items-center text-center p-8 bg-navy-50 hover:bg-navy-950 border border-navy-100 hover:border-navy-800 rounded-2xl transition-all duration-500 hover:shadow-2xl hover:shadow-navy-200/50 hover:-translate-y-2"
           >
             <div className="w-16 h-16 bg-navy-100 group-hover:bg-white/10 rounded-2xl flex items-center justify-center text-navy-600 group-hover:text-white transition-all duration-500 mb-5">
-              <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
-              </svg>
+              <Mail className="w-8 h-8" />
             </div>
             <h3 className="text-lg font-bold text-navy-950 group-hover:text-white transition-colors duration-500 mb-2">
               E-mail
@@ -435,9 +400,7 @@ function Contact() {
             </p>
             <span className="mt-4 inline-flex items-center gap-1 text-navy-600 group-hover:text-white font-semibold text-sm transition-colors duration-500">
               Stuur E-mail
-              <svg className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
-              </svg>
+              <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
             </span>
           </a>
         </div>
@@ -497,18 +460,14 @@ function Footer() {
                 href={`tel:${PHONE}`}
                 className="flex items-center gap-2 text-navy-400 hover:text-white transition-colors duration-200"
               >
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z" />
-                </svg>
+                <Phone className="w-4 h-4" />
                 {PHONE_DISPLAY}
               </a>
               <a
                 href={`mailto:${EMAIL}`}
                 className="flex items-center gap-2 text-navy-400 hover:text-white transition-colors duration-200"
               >
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
-                </svg>
+                <Mail className="w-4 h-4" />
                 {EMAIL}
               </a>
             </div>
