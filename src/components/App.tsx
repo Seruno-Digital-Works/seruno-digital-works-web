@@ -77,29 +77,6 @@ const NAV_LINKS = [
 ];
 
 /* ─── Intersection Observer Hook ─── */
-function useInView(threshold = 0.15) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.unobserve(el);
-        }
-      },
-      { threshold }
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, [threshold]);
-
-  return { ref, isVisible };
-}
-
 /* ─── WhatsApp SVG Icon ─── */
 function WhatsAppIcon({ className = "w-6 h-6" }: { className?: string }) {
   return (
@@ -218,7 +195,7 @@ function Hero() {
           </h1>
 
           {/* Subheading */}
-          <p className="text-lg sm:text-xl text-navy-600 leading-relaxed max-w-2xl mb-10 animate-fade-in-up animation-delay-200">
+          <p className="text-lg sm:text-xl text-slate-600 leading-relaxed max-w-2xl mb-10 animate-fade-in-up animation-delay-200">
             Wij zijn een klein team dat websites en webshops bouwt voor zelfstandigen en bedrijven
           </p>
 
@@ -252,7 +229,6 @@ function Hero() {
 
 /* ─── Services Section ─── */
 function Services() {
-  const { ref, isVisible } = useInView(0.1);
 
   return (
     <section id="diensten" className="relative py-24 lg:py-32 bg-white overflow-hidden">
@@ -260,24 +236,21 @@ function Services() {
       <div className="absolute top-0 right-0 w-96 h-96 bg-navy-50 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl" />
       <div className="absolute bottom-0 left-0 w-72 h-72 bg-navy-100/50 rounded-full translate-y-1/2 -translate-x-1/2 blur-3xl" />
 
-      <div ref={ref} className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center mb-16 lg:mb-20">
           <span
-            className={`inline-block text-navy-600 font-semibold text-sm tracking-widest uppercase mb-4 ${isVisible ? "animate-fade-in" : "opacity-0"
-              }`}
+            className="inline-block text-navy-600 font-semibold text-sm tracking-widest uppercase mb-4"
           >
             Wat Wij Doen
           </span>
           <h2
-            className={`text-3xl sm:text-4xl lg:text-5xl font-extrabold text-navy-950 mb-6 ${isVisible ? "animate-fade-in-up" : "opacity-0"
-              }`}
+            className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-navy-950 mb-6"
           >
             Onze Diensten
           </h2>
           <p
-            className={`text-navy-600 text-lg max-w-2xl mx-auto leading-relaxed ${isVisible ? "animate-fade-in-up animation-delay-200" : "opacity-0"
-              }`}
+            className="text-slate-600 text-lg max-w-2xl mx-auto leading-relaxed"
           >
             Wij bieden een breed scala aan digitale diensten om uw online aanwezigheid te versterken
             en uw bedrijf te laten groeien.
@@ -289,9 +262,7 @@ function Services() {
           {SERVICES.map((service, i) => (
             <div
               key={i}
-              className={`relative bg-white border border-navy-100 rounded-2xl p-8 transition-all duration-500 ${isVisible ? "animate-fade-in-up" : "opacity-0"
-                }`}
-              style={{ animationDelay: isVisible ? `${i * 75}ms` : "0ms" }}
+              className="relative bg-white border border-navy-100 rounded-2xl p-8 transition-all duration-500"
             >
               <div className="relative z-10">
                 {/* Icon */}
@@ -303,7 +274,7 @@ function Services() {
                 <h3 className="text-xl font-bold text-navy-950 mb-3">
                   {service.title}
                 </h3>
-                <p className="text-navy-500 leading-relaxed">
+                <p className="text-slate-500 leading-relaxed">
                   {service.description}
                 </p>
               </div>
@@ -317,7 +288,6 @@ function Services() {
 
 /* ─── About Section ─── */
 function About() {
-  const { ref, isVisible } = useInView(0.1);
 
   return (
     <section id="over-ons" className="relative py-24 lg:py-32 bg-navy-950 overflow-hidden">
@@ -325,31 +295,28 @@ function About() {
       <div className="absolute top-1/4 right-0 w-96 h-96 bg-navy-800/30 rounded-full blur-3xl" />
       <div className="absolute bottom-0 left-1/4 w-72 h-72 bg-navy-700/20 rounded-full blur-3xl" />
 
-      <div ref={ref} className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           {/* Left Content */}
           <div>
             <span
-              className={`inline-block text-navy-400 font-semibold text-sm tracking-widest uppercase mb-4 ${isVisible ? "animate-slide-in-left" : "opacity-0"
-                }`}
+              className="inline-block text-navy-400 font-semibold text-sm tracking-widest uppercase mb-4"
             >
               Over Ons
             </span>
             <h2
-              className={`text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white mb-6 leading-tight ${isVisible ? "animate-slide-in-left animation-delay-200" : "opacity-0"
-                }`}
+              className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white mb-6 leading-tight"
             >
               Uw Partner in{" "}
               <span className="gradient-text">Digitale Groei</span>
             </h2>
             <div
-              className={`space-y-4 text-navy-200 leading-relaxed text-lg ${isVisible ? "animate-slide-in-left animation-delay-400" : "opacity-0"
-                }`}
+              className="space-y-4 text-slate-300 leading-relaxed text-lg"
             >
               <p>
                 Bij <strong className="text-white">Seruno Digital Works</strong> combineren wij
                 technische expertise met creatieve visie. Wij geloven dat elke onderneming een
-                sterke digitale aanwezigheid verdient — ongeacht de omvang.
+                sterke digitale aanwezigheid verdient.
               </p>
               <p>
                 Van kleine startups tot gevestigde bedrijven, wij ontwikkelen op maat gemaakte
@@ -362,8 +329,7 @@ function About() {
 
           {/* Right – Visual Card */}
           <div
-            className={`${isVisible ? "animate-slide-in-right animation-delay-400" : "opacity-0"
-              }`}
+            className=""
           >
             <div className="relative">
               {/* Glow background */}
@@ -399,30 +365,26 @@ function About() {
 
 /* ─── Contact Section ─── */
 function Contact() {
-  const { ref, isVisible } = useInView(0.1);
 
   return (
     <section id="contact" className="relative py-24 lg:py-32 bg-white overflow-hidden">
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-navy-50 rounded-full -translate-y-1/2 blur-3xl" />
 
-      <div ref={ref} className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center mb-16">
           <span
-            className={`inline-block text-navy-600 font-semibold text-sm tracking-widest uppercase mb-4 ${isVisible ? "animate-fade-in" : "opacity-0"
-              }`}
+            className="inline-block text-navy-600 font-semibold text-sm tracking-widest uppercase mb-4"
           >
             Neem Contact Op
           </span>
           <h2
-            className={`text-3xl sm:text-4xl lg:text-5xl font-extrabold text-navy-950 mb-6 ${isVisible ? "animate-fade-in-up" : "opacity-0"
-              }`}
+            className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-navy-950 mb-6"
           >
             Laten We Samenwerken
           </h2>
           <p
-            className={`text-navy-600 text-lg max-w-2xl mx-auto leading-relaxed ${isVisible ? "animate-fade-in-up animation-delay-200" : "opacity-0"
-              }`}
+            className="text-slate-600 text-lg max-w-2xl mx-auto leading-relaxed"
           >
             Heeft u een project in gedachten? Neem vandaag nog contact met ons op en ontdek wat wij
             voor u kunnen betekenen.
@@ -436,8 +398,7 @@ function Contact() {
             href={WHATSAPP_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className={`group flex flex-col items-center text-center p-8 bg-green-50 hover:bg-green-600 border border-green-100 hover:border-green-500 rounded-2xl transition-all duration-500 hover:shadow-2xl hover:shadow-green-200/50 hover:-translate-y-2 ${isVisible ? "animate-fade-in-up animation-delay-200" : "opacity-0"
-              }`}
+            className="group flex flex-col items-center text-center p-8 bg-green-50 hover:bg-green-600 border border-green-100 hover:border-green-500 rounded-2xl transition-all duration-500 hover:shadow-2xl hover:shadow-green-200/50 hover:-translate-y-2"
           >
             <div className="w-16 h-16 bg-green-100 group-hover:bg-white/20 rounded-2xl flex items-center justify-center text-green-600 group-hover:text-white transition-all duration-500 mb-5">
               <WhatsAppIcon className="w-8 h-8" />
@@ -445,7 +406,7 @@ function Contact() {
             <h3 className="text-lg font-bold text-navy-950 group-hover:text-white transition-colors duration-500 mb-2">
               WhatsApp
             </h3>
-            <p className="text-navy-500 group-hover:text-green-100 transition-colors duration-500 text-sm">
+            <p className="text-slate-500 group-hover:text-green-100 transition-colors duration-500 text-sm">
               {PHONE_DISPLAY}
             </p>
             <span className="mt-4 inline-flex items-center gap-1 text-green-600 group-hover:text-white font-semibold text-sm transition-colors duration-500">
@@ -459,8 +420,7 @@ function Contact() {
           {/* Email Card */}
           <a
             href={`mailto:${EMAIL}`}
-            className={`group flex flex-col items-center text-center p-8 bg-navy-50 hover:bg-navy-950 border border-navy-100 hover:border-navy-800 rounded-2xl transition-all duration-500 hover:shadow-2xl hover:shadow-navy-200/50 hover:-translate-y-2 ${isVisible ? "animate-fade-in-up animation-delay-600" : "opacity-0"
-              }`}
+            className="group flex flex-col items-center text-center p-8 bg-navy-50 hover:bg-navy-950 border border-navy-100 hover:border-navy-800 rounded-2xl transition-all duration-500 hover:shadow-2xl hover:shadow-navy-200/50 hover:-translate-y-2"
           >
             <div className="w-16 h-16 bg-navy-100 group-hover:bg-white/10 rounded-2xl flex items-center justify-center text-navy-600 group-hover:text-white transition-all duration-500 mb-5">
               <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
@@ -470,7 +430,7 @@ function Contact() {
             <h3 className="text-lg font-bold text-navy-950 group-hover:text-white transition-colors duration-500 mb-2">
               E-mail
             </h3>
-            <p className="text-navy-500 group-hover:text-navy-300 transition-colors duration-500 text-sm break-all">
+            <p className="text-slate-500 group-hover:text-navy-300 transition-colors duration-500 text-sm break-all">
               {EMAIL}
             </p>
             <span className="mt-4 inline-flex items-center gap-1 text-navy-600 group-hover:text-white font-semibold text-sm transition-colors duration-500">
@@ -499,7 +459,7 @@ function Footer() {
             <div className="flex items-center gap-3 mb-4 group">
               <img src="/seruno-full-logo.jpeg" alt="Seruno Digital Works" className="h-20 w-auto object-contain transition-transform duration-300 group-hover:scale-105" />
             </div>
-            <p className="text-navy-400 text-sm leading-relaxed max-w-xs">
+            <p className="text-slate-400 text-sm leading-relaxed max-w-xs">
               Uw digitale partner voor webontwikkeling, e-commerce en innovatieve technologieën.
             </p>
           </div>
