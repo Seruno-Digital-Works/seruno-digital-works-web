@@ -233,11 +233,11 @@ function Services() {
           {SERVICES.map((service, i) => (
             <div
               key={i}
-              className="relative bg-white border border-navy-100 rounded-2xl p-8 transition-all duration-500"
+              className="relative bg-white border border-navy-100 rounded-2xl p-6 md:p-8 transition-all duration-500"
             >
               <div className="relative z-10">
                 {/* Icon */}
-                <div className="w-14 h-14 bg-navy-50 rounded-xl flex items-center justify-center text-navy-600 mb-6">
+                <div className="w-12 h-12 md:w-14 md:h-14 bg-navy-50 rounded-xl flex items-center justify-center text-navy-600 mb-4 md:mb-6">
                   {service.icon}
                 </div>
 
@@ -303,7 +303,7 @@ function About() {
               {/* Glow background */}
               <div className="absolute -inset-4 bg-gradient-to-r from-navy-500/20 to-navy-700/20 rounded-3xl blur-2xl" />
 
-              <div className="relative bg-navy-900 border border-navy-800/80 rounded-2xl p-10 space-y-6">
+              <div className="relative bg-navy-900 border border-navy-800/80 rounded-2xl p-6 md:p-10 space-y-4 md:space-y-6">
                 <h3 className="text-2xl font-bold text-white mb-6">Waarom Seruno?</h3>
 
                 {[
@@ -365,10 +365,10 @@ function Contact() {
             href={WHATSAPP_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="group flex flex-col items-center text-center p-8 bg-green-50 hover:bg-green-600 border border-green-100 hover:border-green-500 rounded-2xl transition-all duration-500 hover:shadow-2xl hover:shadow-green-200/50 hover:-translate-y-2"
+            className="group flex flex-col items-center text-center p-6 md:p-8 bg-green-50 hover:bg-green-600 border border-green-100 hover:border-green-500 rounded-2xl transition-all duration-500 hover:shadow-2xl hover:shadow-green-200/50 hover:-translate-y-2"
           >
-            <div className="w-16 h-16 bg-green-100 group-hover:bg-white/20 rounded-2xl flex items-center justify-center text-green-600 group-hover:text-white transition-all duration-500 mb-5">
-              <WhatsAppIcon className="w-8 h-8" />
+            <div className="w-12 h-12 md:w-16 md:h-16 bg-green-100 group-hover:bg-white/20 rounded-2xl flex items-center justify-center text-green-600 group-hover:text-white transition-all duration-500 mb-4 md:mb-5">
+              <WhatsAppIcon className="w-6 h-6 md:w-8 md:h-8" />
             </div>
             <h3 className="text-lg font-bold text-navy-950 group-hover:text-white transition-colors duration-500 mb-2">
               WhatsApp
@@ -385,10 +385,10 @@ function Contact() {
           {/* Email Card */}
           <a
             href={`mailto:${EMAIL}`}
-            className="group flex flex-col items-center text-center p-8 bg-navy-50 hover:bg-navy-950 border border-navy-100 hover:border-navy-800 rounded-2xl transition-all duration-500 hover:shadow-2xl hover:shadow-navy-200/50 hover:-translate-y-2"
+            className="group flex flex-col items-center text-center p-6 md:p-8 bg-navy-50 hover:bg-navy-950 border border-navy-100 hover:border-navy-800 rounded-2xl transition-all duration-500 hover:shadow-2xl hover:shadow-navy-200/50 hover:-translate-y-2"
           >
-            <div className="w-16 h-16 bg-navy-100 group-hover:bg-white/10 rounded-2xl flex items-center justify-center text-navy-600 group-hover:text-white transition-all duration-500 mb-5">
-              <Mail className="w-8 h-8" />
+            <div className="w-12 h-12 md:w-16 md:h-16 bg-navy-100 group-hover:bg-white/10 rounded-2xl flex items-center justify-center text-navy-600 group-hover:text-white transition-all duration-500 mb-4 md:mb-5">
+              <Mail className="w-6 h-6 md:w-8 md:h-8" />
             </div>
             <h3 className="text-lg font-bold text-navy-950 group-hover:text-white transition-colors duration-500 mb-2">
               E-mail
@@ -413,12 +413,12 @@ function Footer() {
 
   return (
     <footer className="bg-navy-950 border-t border-navy-800/50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid md:grid-cols-3 gap-10 items-start">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 md:gap-10 items-start">
           {/* Brand */}
-          <div>
-            <div className="flex items-center gap-3 mb-4 group">
-              <img src="/seruno-full-logo.jpeg" alt="Seruno Digital Works" className="h-20 w-auto object-contain transition-transform duration-300 group-hover:scale-105" />
+          <div className="sm:col-span-2 md:col-span-1">
+            <div className="flex items-center gap-3 mb-3 md:mb-4 group">
+              <img src="/seruno-full-logo.jpeg" alt="Seruno Digital Works" className="h-16 md:h-20 w-auto object-contain transition-transform duration-300 group-hover:scale-105" />
             </div>
             <p className="text-slate-400 text-sm leading-relaxed max-w-xs">
               Uw digitale partner voor webontwikkeling, e-commerce en innovatieve technologieën.
@@ -427,7 +427,7 @@ function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h4 className="text-white font-semibold mb-4">Snelle Links</h4>
+            <h4 className="text-white font-semibold mb-3 md:mb-4">Snelle Links</h4>
             <div className="space-y-2">
               {NAV_LINKS.map((link) => (
                 <a
@@ -443,7 +443,7 @@ function Footer() {
 
           {/* Contact Info */}
           <div>
-            <h4 className="text-white font-semibold mb-4">Contact</h4>
+            <h4 className="text-white font-semibold mb-3 md:mb-4">Contact</h4>
             <div className="space-y-3 text-sm">
               <a
                 href={WHATSAPP_URL}
@@ -473,7 +473,7 @@ function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="mt-12 pt-8 border-t border-navy-800/50 flex flex-col sm:flex-row justify-between items-center gap-4">
+        <div className="mt-8 md:mt-12 pt-6 md:pt-8 border-t border-navy-800/50 flex flex-col sm:flex-row justify-between items-center gap-4 text-center sm:text-left">
           <p className="text-navy-500 text-sm">
             © {year} Seruno Digital Works. Alle rechten voorbehouden.
           </p>
