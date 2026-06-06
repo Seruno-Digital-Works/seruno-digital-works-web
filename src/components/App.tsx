@@ -1,0 +1,594 @@
+import { useState, useEffect, useRef } from "react";
+
+/* ─── Constants ─── */
+const PHONE = "+32466238796";
+const PHONE_DISPLAY = "+32 466 23 87 96";
+const EMAIL = "serkanahmedov2000@gmail.com";
+const WHATSAPP_URL = `https://wa.me/${PHONE.replace(/\+/g, "")}`;
+
+const SERVICES = [
+  {
+    icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 21v-7.5a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 .75.75V21m-4.5 0H2.36m11.14 0H18m0 0h3.64m-1.39 0V9.349M3.75 21V9.349m0 0a2.25 2.25 0 0 1 1.244-2.013L10.5 4.5l5.506 2.836A2.25 2.25 0 0 1 17.25 9.35" />
+      </svg>
+    ),
+    title: "Webshops & E-commerce",
+    description:
+      "Bouwen, beheren en optimaliseren van webshops en e-commerceplatformen.",
+  },
+  {
+    icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M11.42 15.17 17.25 21A2.652 2.652 0 0 0 21 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 1 1-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.14a4.5 4.5 0 0 0 4.486-6.336l-3.276 3.277a3.004 3.004 0 0 1-2.25-2.25l3.276-3.276a4.5 4.5 0 0 0-6.336 4.486c.049.58.024 1.194-.14 1.743" />
+      </svg>
+    ),
+    title: "Onderhoud & Optimalisatie",
+    description:
+      "Uitvoeren van websiteonderhoud, updates en prestatieverbeteringen.",
+  },
+  {
+    icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 0 0-2.455 2.456ZM16.894 20.567 16.5 21.75l-.394-1.183a2.25 2.25 0 0 0-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 0 0 1.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 0 0 1.423 1.423l1.183.394-1.183.394a2.25 2.25 0 0 0-1.423 1.423Z" />
+      </svg>
+    ),
+    title: "AI & Moderne Technologie",
+    description:
+      "Inzetten van AI-tools en moderne technologieën voor een efficiënte en innovatieve ontwikkeling.",
+  },
+  {
+    icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M14.25 9.75 16.5 12l-2.25 2.25m-4.5 0L7.5 12l2.25-2.25M6 20.25h12A2.25 2.25 0 0 0 20.25 18V6A2.25 2.25 0 0 0 18 3.75H6A2.25 2.25 0 0 0 3.75 6v12A2.25 2.25 0 0 0 6 20.25Z" />
+      </svg>
+    ),
+    title: "Integraties & API's",
+    description:
+      "Integreren van plugins, betaalsystemen, API's en andere externe diensten.",
+  },
+  {
+    icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 1.5H8.25A2.25 2.25 0 0 0 6 3.75v16.5a2.25 2.25 0 0 0 2.25 2.25h7.5A2.25 2.25 0 0 0 18 20.25V3.75a2.25 2.25 0 0 0-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3" />
+      </svg>
+    ),
+    title: "Responsive & SEO",
+    description:
+      "Zorgen voor snelle, gebruiksvriendelijke en SEO-geoptimaliseerde websites die perfect werken op alle apparaten.",
+  },
+  {
+    icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 6.75 22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3-4.5 16.5" />
+      </svg>
+    ),
+    title: "Maatwerk Ontwikkeling",
+    description:
+      "Ontwikkelen van projecten in diverse programmeertalen en technologieën, waarbij gebruik wordt gemaakt van geavanceerde tools en beschikbare resources om de beste oplossing te realiseren.",
+  },
+];
+
+const NAV_LINKS = [
+  { label: "Home", href: "#home" },
+  { label: "Diensten", href: "#diensten" },
+  { label: "Over Ons", href: "#over-ons" },
+  { label: "Contact", href: "#contact" },
+];
+
+/* ─── Intersection Observer Hook ─── */
+function useInView(threshold = 0.15) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.unobserve(el);
+        }
+      },
+      { threshold }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [threshold]);
+
+  return { ref, isVisible };
+}
+
+/* ─── WhatsApp SVG Icon ─── */
+function WhatsAppIcon({ className = "w-6 h-6" }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z" />
+    </svg>
+  );
+}
+
+/* ─── Navbar ─── */
+function Navbar() {
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileOpen, setIsMobileOpen] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => setIsScrolled(window.scrollY > 20);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  return (
+    <nav
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled
+        ? "bg-navy-950 shadow-lg shadow-navy-950/30 py-3"
+        : "bg-transparent py-5"
+        }`}
+    >
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
+        {/* Logo */}
+        <a href="#home" className="flex items-center gap-3 group">
+          <img
+            src="/seruno-full-logo.jpeg"
+            alt="Seruno Digital Works Logo"
+            className="h-20 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+          />
+          {/* <span className={`font-bold text-lg tracking-tight hidden sm:inline transition-colors duration-300 ${isScrolled ? "text-white" : "text-navy-950"
+            }`}>
+            Seruno <span className={isScrolled ? "text-navy-300" : "text-navy-600"}>Digital Works</span>
+          </span> */}
+        </a>
+
+        {/* Desktop Links */}
+        <div className="hidden md:flex items-center gap-8">
+          {NAV_LINKS.map((link) => (
+            <a
+              key={link.href}
+              href={link.href}
+              className={`transition-colors duration-300 text-sm font-medium relative after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[2px] after:transition-all after:duration-300 hover:after:w-full ${isScrolled
+                ? "text-navy-200 hover:text-white after:bg-navy-400"
+                : "text-navy-700 hover:text-navy-950 after:bg-navy-600"
+                }`}
+            >
+              {link.label}
+            </a>
+          ))}
+        </div>
+
+        {/* Mobile Menu Button */}
+        <button
+          onClick={() => setIsMobileOpen(!isMobileOpen)}
+          className={`md:hidden p-2 transition-colors duration-300 ${isScrolled || isMobileOpen ? "text-white" : "text-navy-950"
+            }`}
+          aria-label="Menu openen"
+        >
+          <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            {isMobileOpen ? (
+              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
+            ) : (
+              <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+            )}
+          </svg>
+        </button>
+      </div>
+
+      {/* Mobile Menu */}
+      <div
+        className={`md:hidden overflow-hidden transition-all duration-500 ${isMobileOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+          }`}
+      >
+        <div className="px-4 py-4 bg-navy-950 border-t border-navy-800/50 space-y-1">
+          {NAV_LINKS.map((link) => (
+            <a
+              key={link.href}
+              href={link.href}
+              onClick={() => setIsMobileOpen(false)}
+              className="block px-4 py-3 text-navy-200 hover:text-white hover:bg-navy-800/50 rounded-lg transition-colors duration-200 text-sm font-medium"
+            >
+              {link.label}
+            </a>
+          ))}
+        </div>
+      </div>
+    </nav>
+  );
+}
+
+/* ─── Hero Section ─── */
+function Hero() {
+  return (
+    <section
+      id="home"
+      className="relative min-h-screen flex items-center hero-gradient grid-pattern overflow-hidden"
+    >
+      {/* Decorative orbs */}
+      <div className="absolute top-20 right-10 w-72 h-72 bg-navy-500/20 rounded-full blur-3xl" />
+      <div className="absolute bottom-20 left-10 w-96 h-96 bg-navy-700/15 rounded-full blur-3xl" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-navy-600/10 rounded-full blur-3xl" />
+
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32">
+        <div className="max-w-3xl">
+          {/* Heading */}
+          <h1 className="text-4xl sm:text-5xl lg:text-7xl font-extrabold text-navy-950 leading-tight mb-6 animate-fade-in-up" style={{ fontFamily: 'var(--font-heading)' }}>
+            Websites die werken,
+            <br />
+            <span className="gradient-text-dark">gebouwd voor jouw bedrijf</span>
+          </h1>
+
+          {/* Subheading */}
+          <p className="text-lg sm:text-xl text-navy-600 leading-relaxed max-w-2xl mb-10 animate-fade-in-up animation-delay-200">
+            Wij zijn een klein team dat websites en webshops bouwt voor zelfstandigen en bedrijven
+          </p>
+
+          {/* CTA Buttons */}
+          <div className="flex flex-col sm:flex-row gap-4 animate-fade-in-up animation-delay-400">
+            <a
+              href={WHATSAPP_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-3 bg-green-600 hover:bg-green-500 text-white font-semibold px-8 py-4 rounded-full text-lg transition-all duration-300 hover:shadow-xl hover:shadow-green-600/25 hover:-translate-y-1"
+            >
+              <WhatsAppIcon className="w-6 h-6" />
+              Start een Gesprek
+            </a>
+            <a
+              href="#diensten"
+              className="inline-flex items-center justify-center gap-2 border-2 border-navy-200 hover:border-navy-950 text-navy-950 font-semibold px-8 py-4 rounded-full text-lg transition-all duration-300 hover:bg-navy-50 hover:-translate-y-1"
+            >
+              Onze Diensten
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+              </svg>
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  );
+}
+
+/* ─── Services Section ─── */
+function Services() {
+  const { ref, isVisible } = useInView(0.1);
+
+  return (
+    <section id="diensten" className="relative py-24 lg:py-32 bg-white overflow-hidden">
+      {/* Subtle background decoration */}
+      <div className="absolute top-0 right-0 w-96 h-96 bg-navy-50 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl" />
+      <div className="absolute bottom-0 left-0 w-72 h-72 bg-navy-100/50 rounded-full translate-y-1/2 -translate-x-1/2 blur-3xl" />
+
+      <div ref={ref} className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Section Header */}
+        <div className="text-center mb-16 lg:mb-20">
+          <span
+            className={`inline-block text-navy-600 font-semibold text-sm tracking-widest uppercase mb-4 ${isVisible ? "animate-fade-in" : "opacity-0"
+              }`}
+          >
+            Wat Wij Doen
+          </span>
+          <h2
+            className={`text-3xl sm:text-4xl lg:text-5xl font-extrabold text-navy-950 mb-6 ${isVisible ? "animate-fade-in-up" : "opacity-0"
+              }`}
+          >
+            Onze Diensten
+          </h2>
+          <p
+            className={`text-navy-600 text-lg max-w-2xl mx-auto leading-relaxed ${isVisible ? "animate-fade-in-up animation-delay-200" : "opacity-0"
+              }`}
+          >
+            Wij bieden een breed scala aan digitale diensten om uw online aanwezigheid te versterken
+            en uw bedrijf te laten groeien.
+          </p>
+        </div>
+
+        {/* Service Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+          {SERVICES.map((service, i) => (
+            <div
+              key={i}
+              className={`relative bg-white border border-navy-100 rounded-2xl p-8 transition-all duration-500 ${isVisible ? "animate-fade-in-up" : "opacity-0"
+                }`}
+              style={{ animationDelay: isVisible ? `${i * 75}ms` : "0ms" }}
+            >
+              <div className="relative z-10">
+                {/* Icon */}
+                <div className="w-14 h-14 bg-navy-50 rounded-xl flex items-center justify-center text-navy-600 mb-6">
+                  {service.icon}
+                </div>
+
+                {/* Content */}
+                <h3 className="text-xl font-bold text-navy-950 mb-3">
+                  {service.title}
+                </h3>
+                <p className="text-navy-500 leading-relaxed">
+                  {service.description}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ─── About Section ─── */
+function About() {
+  const { ref, isVisible } = useInView(0.1);
+
+  return (
+    <section id="over-ons" className="relative py-24 lg:py-32 bg-navy-950 overflow-hidden">
+      {/* Background elements */}
+      <div className="absolute top-1/4 right-0 w-96 h-96 bg-navy-800/30 rounded-full blur-3xl" />
+      <div className="absolute bottom-0 left-1/4 w-72 h-72 bg-navy-700/20 rounded-full blur-3xl" />
+
+      <div ref={ref} className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid lg:grid-cols-2 gap-16 items-center">
+          {/* Left Content */}
+          <div>
+            <span
+              className={`inline-block text-navy-400 font-semibold text-sm tracking-widest uppercase mb-4 ${isVisible ? "animate-slide-in-left" : "opacity-0"
+                }`}
+            >
+              Over Ons
+            </span>
+            <h2
+              className={`text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white mb-6 leading-tight ${isVisible ? "animate-slide-in-left animation-delay-200" : "opacity-0"
+                }`}
+            >
+              Uw Partner in{" "}
+              <span className="gradient-text">Digitale Groei</span>
+            </h2>
+            <div
+              className={`space-y-4 text-navy-200 leading-relaxed text-lg ${isVisible ? "animate-slide-in-left animation-delay-400" : "opacity-0"
+                }`}
+            >
+              <p>
+                Bij <strong className="text-white">Seruno Digital Works</strong> combineren wij
+                technische expertise met creatieve visie. Wij geloven dat elke onderneming een
+                sterke digitale aanwezigheid verdient — ongeacht de omvang.
+              </p>
+              <p>
+                Van kleine startups tot gevestigde bedrijven, wij ontwikkelen op maat gemaakte
+                oplossingen die niet alleen mooi zijn, maar ook resultaat leveren. Met de nieuwste
+                technologieën en AI-tools bouwen wij websites die sneller, slimmer en effectiever
+                zijn.
+              </p>
+            </div>
+          </div>
+
+          {/* Right – Visual Card */}
+          <div
+            className={`${isVisible ? "animate-slide-in-right animation-delay-400" : "opacity-0"
+              }`}
+          >
+            <div className="relative">
+              {/* Glow background */}
+              <div className="absolute -inset-4 bg-gradient-to-r from-navy-500/20 to-navy-700/20 rounded-3xl blur-2xl" />
+
+              <div className="relative bg-navy-900 border border-navy-800/80 rounded-2xl p-10 space-y-6">
+                <h3 className="text-2xl font-bold text-white mb-6">Waarom Seruno?</h3>
+
+                {[
+                  "Persoonlijke aanpak & directe communicatie",
+                  "Moderne technologieën & AI-integratie",
+                  "Snelle oplevering zonder concessies",
+                  "Transparante prijzen, geen verborgen kosten",
+                  "Langdurige ondersteuning na oplevering",
+                ].map((item, i) => (
+                  <div key={i} className="flex items-start gap-3">
+                    <div className="flex-shrink-0 w-6 h-6 bg-navy-500/30 rounded-full flex items-center justify-center mt-0.5">
+                      <svg className="w-3.5 h-3.5 text-navy-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+                      </svg>
+                    </div>
+                    <span className="text-navy-100 font-medium">{item}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ─── Contact Section ─── */
+function Contact() {
+  const { ref, isVisible } = useInView(0.1);
+
+  return (
+    <section id="contact" className="relative py-24 lg:py-32 bg-white overflow-hidden">
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-navy-50 rounded-full -translate-y-1/2 blur-3xl" />
+
+      <div ref={ref} className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Section Header */}
+        <div className="text-center mb-16">
+          <span
+            className={`inline-block text-navy-600 font-semibold text-sm tracking-widest uppercase mb-4 ${isVisible ? "animate-fade-in" : "opacity-0"
+              }`}
+          >
+            Neem Contact Op
+          </span>
+          <h2
+            className={`text-3xl sm:text-4xl lg:text-5xl font-extrabold text-navy-950 mb-6 ${isVisible ? "animate-fade-in-up" : "opacity-0"
+              }`}
+          >
+            Laten We Samenwerken
+          </h2>
+          <p
+            className={`text-navy-600 text-lg max-w-2xl mx-auto leading-relaxed ${isVisible ? "animate-fade-in-up animation-delay-200" : "opacity-0"
+              }`}
+          >
+            Heeft u een project in gedachten? Neem vandaag nog contact met ons op en ontdek wat wij
+            voor u kunnen betekenen.
+          </p>
+        </div>
+
+        {/* Contact Cards */}
+        <div className="grid md:grid-cols-2 gap-6 lg:gap-8 max-w-2xl mx-auto">
+          {/* WhatsApp Card */}
+          <a
+            href={WHATSAPP_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`group flex flex-col items-center text-center p-8 bg-green-50 hover:bg-green-600 border border-green-100 hover:border-green-500 rounded-2xl transition-all duration-500 hover:shadow-2xl hover:shadow-green-200/50 hover:-translate-y-2 ${isVisible ? "animate-fade-in-up animation-delay-200" : "opacity-0"
+              }`}
+          >
+            <div className="w-16 h-16 bg-green-100 group-hover:bg-white/20 rounded-2xl flex items-center justify-center text-green-600 group-hover:text-white transition-all duration-500 mb-5">
+              <WhatsAppIcon className="w-8 h-8" />
+            </div>
+            <h3 className="text-lg font-bold text-navy-950 group-hover:text-white transition-colors duration-500 mb-2">
+              WhatsApp
+            </h3>
+            <p className="text-navy-500 group-hover:text-green-100 transition-colors duration-500 text-sm">
+              {PHONE_DISPLAY}
+            </p>
+            <span className="mt-4 inline-flex items-center gap-1 text-green-600 group-hover:text-white font-semibold text-sm transition-colors duration-500">
+              Chat Nu
+              <svg className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+              </svg>
+            </span>
+          </a>
+
+          {/* Email Card */}
+          <a
+            href={`mailto:${EMAIL}`}
+            className={`group flex flex-col items-center text-center p-8 bg-navy-50 hover:bg-navy-950 border border-navy-100 hover:border-navy-800 rounded-2xl transition-all duration-500 hover:shadow-2xl hover:shadow-navy-200/50 hover:-translate-y-2 ${isVisible ? "animate-fade-in-up animation-delay-600" : "opacity-0"
+              }`}
+          >
+            <div className="w-16 h-16 bg-navy-100 group-hover:bg-white/10 rounded-2xl flex items-center justify-center text-navy-600 group-hover:text-white transition-all duration-500 mb-5">
+              <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
+              </svg>
+            </div>
+            <h3 className="text-lg font-bold text-navy-950 group-hover:text-white transition-colors duration-500 mb-2">
+              E-mail
+            </h3>
+            <p className="text-navy-500 group-hover:text-navy-300 transition-colors duration-500 text-sm break-all">
+              {EMAIL}
+            </p>
+            <span className="mt-4 inline-flex items-center gap-1 text-navy-600 group-hover:text-white font-semibold text-sm transition-colors duration-500">
+              Stuur E-mail
+              <svg className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+              </svg>
+            </span>
+          </a>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ─── Footer ─── */
+function Footer() {
+  const year = new Date().getFullYear();
+
+  return (
+    <footer className="bg-navy-950 border-t border-navy-800/50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="grid md:grid-cols-3 gap-10 items-start">
+          {/* Brand */}
+          <div>
+            <div className="flex items-center gap-3 mb-4 group">
+              <img src="/seruno-full-logo.jpeg" alt="Seruno Digital Works" className="h-20 w-auto object-contain transition-transform duration-300 group-hover:scale-105" />
+            </div>
+            <p className="text-navy-400 text-sm leading-relaxed max-w-xs">
+              Uw digitale partner voor webontwikkeling, e-commerce en innovatieve technologieën.
+            </p>
+          </div>
+
+          {/* Quick Links */}
+          <div>
+            <h4 className="text-white font-semibold mb-4">Snelle Links</h4>
+            <div className="space-y-2">
+              {NAV_LINKS.map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  className="block text-navy-400 hover:text-white transition-colors duration-200 text-sm"
+                >
+                  {link.label}
+                </a>
+              ))}
+            </div>
+          </div>
+
+          {/* Contact Info */}
+          <div>
+            <h4 className="text-white font-semibold mb-4">Contact</h4>
+            <div className="space-y-3 text-sm">
+              <a
+                href={WHATSAPP_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 text-navy-400 hover:text-green-400 transition-colors duration-200"
+              >
+                <WhatsAppIcon className="w-4 h-4" />
+                {PHONE_DISPLAY}
+              </a>
+              <a
+                href={`tel:${PHONE}`}
+                className="flex items-center gap-2 text-navy-400 hover:text-white transition-colors duration-200"
+              >
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z" />
+                </svg>
+                {PHONE_DISPLAY}
+              </a>
+              <a
+                href={`mailto:${EMAIL}`}
+                className="flex items-center gap-2 text-navy-400 hover:text-white transition-colors duration-200"
+              >
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
+                </svg>
+                {EMAIL}
+              </a>
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom bar */}
+        <div className="mt-12 pt-8 border-t border-navy-800/50 flex flex-col sm:flex-row justify-between items-center gap-4">
+          <p className="text-navy-500 text-sm">
+            © {year} Seruno Digital Works. Alle rechten voorbehouden.
+          </p>
+        </div>
+      </div>
+
+      {/* Floating WhatsApp Button */}
+      <a
+        href={WHATSAPP_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="fixed bottom-6 right-6 z-50 w-16 h-16 bg-green-500 hover:bg-green-400 text-white rounded-full flex items-center justify-center shadow-2xl shadow-green-600/40 transition-all duration-300 hover:scale-110 hover:-translate-y-1"
+        aria-label="Chat via WhatsApp"
+      >
+        <WhatsAppIcon className="w-8 h-8" />
+      </a>
+    </footer>
+  );
+}
+
+/* ─── Main App ─── */
+export default function App() {
+  return (
+    <div className="font-sans antialiased">
+      <Navbar />
+      <main>
+        <Hero />
+        <Services />
+        <About />
+        <Contact />
+      </main>
+      <Footer />
+    </div>
+  );
+}
