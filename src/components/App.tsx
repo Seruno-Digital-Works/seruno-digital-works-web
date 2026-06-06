@@ -151,10 +151,15 @@ function Hero() {
       id="home"
       className="relative min-h-screen flex items-center hero-gradient grid-pattern overflow-hidden"
     >
-      {/* Decorative orbs */}
-      <div className="absolute top-20 right-10 w-72 h-72 bg-navy-500/20 rounded-full blur-3xl" />
-      <div className="absolute bottom-20 left-10 w-96 h-96 bg-navy-700/15 rounded-full blur-3xl" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-navy-600/10 rounded-full blur-3xl" />
+      {/* Radial gradient background — cross-platform safe */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background:
+            "radial-gradient(ellipse 60% 55% at 80% 30%, rgba(147,197,253,0.25) 0%, transparent 70%), " +
+            "radial-gradient(ellipse 50% 50% at 10% 80%, rgba(147,197,253,0.18) 0%, transparent 65%)",
+        }}
+      />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32">
         <div className="max-w-3xl">
@@ -201,9 +206,6 @@ function Services() {
 
   return (
     <section id="diensten" className="relative py-24 lg:py-32 bg-white overflow-hidden">
-      {/* Subtle background decoration */}
-      <div className="absolute top-0 right-0 w-96 h-96 bg-navy-50 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl" />
-      <div className="absolute bottom-0 left-0 w-72 h-72 bg-navy-100/50 rounded-full translate-y-1/2 -translate-x-1/2 blur-3xl" />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
@@ -260,9 +262,6 @@ function About() {
 
   return (
     <section id="over-ons" className="relative py-24 lg:py-32 bg-navy-950 overflow-hidden">
-      {/* Background elements */}
-      <div className="absolute top-1/4 right-0 w-96 h-96 bg-navy-800/30 rounded-full blur-3xl" />
-      <div className="absolute bottom-0 left-1/4 w-72 h-72 bg-navy-700/20 rounded-full blur-3xl" />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
@@ -337,7 +336,6 @@ function Contact() {
 
   return (
     <section id="contact" className="relative py-24 lg:py-32 bg-white overflow-hidden">
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-navy-50 rounded-full -translate-y-1/2 blur-3xl" />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
